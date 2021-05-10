@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-depl
+spec:
+  selector:
+    matchLabels:
+      app: orders-depl
+  template:
+    metadata:
+      labels:
+        app: orders-depl
+    spec:
+      containers:
+        - name: orders
+          image: dockeridohyeah/apps-orders:latest
+          resources:
+            limits:
+              memory: '128Mi'
+              cpu: '500m'
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders-srv
+spec:
+  selector:
+    app: orders
+  ports:
+    - port: 3003
+      targetPort: 3003

@@ -1,0 +1,10 @@
+node_modules
+dist
+infra
+README.md
+nest-readme.md
+.gitignore
+.prettierrc
+Dockerfile.*
+Dockerfile
+.eslintrc.js

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: charge-depl
+spec:
+  selector:
+    matchLabels:
+      app: charge-depl
+  template:
+    metadata:
+      labels:
+        app: charge-depl
+    spec:
+      containers:
+        - name: charge
+          image: dockeridohyeah/apps-charge:latest
+          resources:
+            limits:
+              memory: '128Mi'
+              cpu: '500m'
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: charge-srv
+spec:
+  selector:
+    app: charge
+  ports:
+    - port: 3002
+      targetPort: 3002

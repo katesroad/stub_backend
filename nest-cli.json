@@ -1,0 +1,57 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/auth/src",
+  "monorepo": true,
+  "root": "apps/auth",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "apps/auth/tsconfig.app.json"
+  },
+  "projects": {
+    "tickets": {
+      "type": "application",
+      "root": "apps/tickets",
+      "entryFile": "main",
+      "sourceRoot": "apps/tickets/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/tickets/tsconfig.app.json"
+      }
+    },
+    "auth": {
+      "type": "application",
+      "root": "apps/auth",
+      "entryFile": "main",
+      "sourceRoot": "apps/auth/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/auth/tsconfig.app.json"
+      }
+    },
+    "orders": {
+      "type": "application",
+      "root": "apps/orders",
+      "entryFile": "main",
+      "sourceRoot": "apps/orders/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/orders/tsconfig.app.json"
+      }
+    },
+    "charge": {
+      "type": "application",
+      "root": "apps/charge",
+      "entryFile": "main",
+      "sourceRoot": "apps/charge/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/charge/tsconfig.app.json"
+      }
+    },
+    "common": {
+      "type": "library",
+      "root": "libs/common",
+      "entryFile": "index",
+      "sourceRoot": "libs/common/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/common/tsconfig.lib.json"
+      }
+    }
+  }
+}
