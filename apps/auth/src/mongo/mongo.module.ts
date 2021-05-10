@@ -4,7 +4,7 @@ import { User, UserSchema } from './user.schema';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/users'),
+    MongooseModule.forRoot('mongodb://auth-mongo-srv:27017/auth'),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   exports: [

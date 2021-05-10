@@ -3,21 +3,18 @@ kind: Deployment
 metadata:
   name: auth-depl
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app: auth-depl
+      app: auth
   template:
     metadata:
       labels:
-        app: auth-depl
+        app: auth
     spec:
       containers:
         - name: auth
           image: dockeridohyeah/apps-auth:latest
-          resources:
-            limits:
-              memory: '128Mi'
-              cpu: '500m'
 
 ---
 apiVersion: v1

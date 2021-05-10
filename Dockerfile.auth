@@ -4,4 +4,4 @@ COPY *.json ./
 RUN npm install
 COPY . .
 RUN npm run build auth
-CMD [ "npm", "run", "start", "auth"]
+CMD [ "npm", "run", "start:dev", "auth"]
