@@ -10,7 +10,7 @@ export class LogMiddleware implements NestMiddleware {
       if (Object.keys(query).length) console.log(query);
     } else {
       if (Object.keys(body)) {
-        console.log(body  );
+        console.log(body);
       }
     }
     next();
