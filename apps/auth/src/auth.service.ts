@@ -1,6 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { IUser } from '@app/common/interfaces';
 import { UserDoc, User } from './mongo/user.schema';
 import { LoginDto, RegisterDto } from './dto';
 import { CryptoService } from './crypto/crypto.service';
@@ -12,12 +17,19 @@ export class AuthService {
     private cryptoService: CryptoService,
   ) {}
 
-  renewToken(): string {
-    return 'renewed token';
+  async renewUser(token: string): Promise<IUser> {
+    const user = await this.userModel
+      .findOne({ token })
+      .then((userDoc) => (userDoc ? userDoc.toJSON() : null));
+
+    if (!user || this.cryptoService.verifyToken(user?.token)) {
+      throw new UnauthorizedException(`Invalid request`);
+    }
+
+    return this.cleanUser(user);
   }
 
-  //register user with email and password
-  async register(registerDto: RegisterDto) {
+  async register(registerDto: RegisterDto): Promise<IUser> {
     const { email, password } = registerDto;
     const isExisting = await this.userModel.findOne({ email });
 
@@ -26,23 +38,33 @@ export class AuthService {
     }
 
     const hashedPwd = this.cryptoService.hashPwd(password);
-    return this.userModel.create({ email, password: hashedPwd });
+    return this.userModel
+      .create({ email, password: hashedPwd })
+      .then((userDoc) => userDoc.toJSON())
+      .then((user) => this.cleanUser(user));
   }
 
-  async login(loginDto: LoginDto) {
+  async login(loginDto: LoginDto): Promise<IUser> {
     const { email, password } = loginDto;
-    const user = await this.userModel.findOne({ email });
-    const errorMsg = 'Please check email and password.';
+    const user = await this.userModel
+      .findOne({ email })
+      .then((userDoc) => (userDoc ? userDoc.toJSON() : null));
 
-    if (!user) throw new BadRequestException(errorMsg);
-
-    const isValid = this.cryptoService.comparePwd(password, user.password);
-    if (!isValid) {
-      throw new BadRequestException(errorMsg);
+    if (!user || this.cryptoService.comparePwd(password, user.password)) {
+      throw new BadRequestException('Please check email and password.');
     }
+
+    return this.cleanUser(user);
   }
 
-  logout() {
-    return null;
+  async logout(userId: string) {
+    return this.userModel.updateOne({ _id: userId, token: null });
+  }
+
+  private async cleanUser({ _id, password, ...rest }: any): Promise<IUser> {
+    const userData = { id: _id, ...rest };
+    const token = this.cryptoService.getToken(userData);
+    await this.userModel.updateOne(_id, { token });
+    return { ...userData, token };
   }
 }

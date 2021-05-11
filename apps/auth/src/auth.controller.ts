@@ -14,8 +14,8 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get()
-  renewToken(): string {
-    return this.authService.renewToken();
+  renewUser() {
+    return this.authService.renewUser('');
   }
 
   @HttpCode(HttpStatus.CREATED)
@@ -31,6 +31,6 @@ export class AuthController {
 
   @Get('/logout')
   logout() {
-    return this.authService.logout();
+    return this.authService.logout('');
   }
 }
