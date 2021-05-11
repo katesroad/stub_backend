@@ -14,8 +14,13 @@ spec:
     spec:
       containers:
         - name: auth
-          image: dockeridohyeah/apps-auth:latest
-
+          image: stephengrider/auth
+          env:
+            - name: access
+              valueFrom:
+                secretKeyRef:
+                  name: auth
+                  key: access
 ---
 apiVersion: v1
 kind: Service
