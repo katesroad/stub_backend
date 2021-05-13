@@ -3,10 +3,10 @@ import { ResInterceptor } from '@app/common/interceptors';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
-import { AuthModule } from './auth.module';
+import { UserModule } from './user.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AuthModule);
+  const app = await NestFactory.create(UserModule);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -21,7 +21,7 @@ async function bootstrap() {
   app.enableCors({ credentials: true, origin: true });
 
   await app.listen(3001, () => {
-    console.log('Auth service is listening 3001');
+    console.log('User service is listening 3001');
   });
 }
 bootstrap();

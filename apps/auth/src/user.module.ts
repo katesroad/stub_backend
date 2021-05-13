@@ -3,8 +3,8 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import config from './config';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
+import { UserController } from './user.controller';
+import { UserService } from './user.service';
 import { CryptoModule } from './crypto/crypto.module';
 import { MongoModule } from './mongo/mongo.module';
 
@@ -23,10 +23,10 @@ import { MongoModule } from './mongo/mongo.module';
     MongoModule,
     CryptoModule,
   ],
-  controllers: [AuthController],
-  providers: [AuthService],
+  controllers: [UserController],
+  providers: [UserService],
 })
-export class AuthModule implements NestModule {
+export class UserModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LogMiddleware).forRoutes('auth');
   }

@@ -11,7 +11,7 @@ import { LoginDto, RegisterDto } from './dto';
 import { CryptoService } from './crypto/crypto.service';
 
 @Injectable()
-export class AuthService {
+export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDoc>,
     private cryptoService: CryptoService,
