@@ -1,7 +1,0 @@
-FROM node:alpine As development
-WORKDIR /usr/src/server
-COPY *.json ./
-RUN npm install
-COPY . .
-RUN npm run build charge
-CMD [ "npm", "run", "start", "charge"]

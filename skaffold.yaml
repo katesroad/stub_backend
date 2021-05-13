@@ -1,25 +1,13 @@
 apiVersion: skaffold/v2beta15
 kind: Config
 metadata:
-  name: server
+  name: nest
 build:
   artifacts:
-  - image: dockeridohyeah/apps-auth
+  - image: dockeridohyeah/nest-auth
     docker:
       dockerfile: Dockerfile.auth
-  - image: dockeridohyeah/apps-charge
-    docker:
-      dockerfile: Dockerfile.charge
-  - image: dockeridohyeah/apps-orders
-    docker:
-      dockerfile: Dockerfile.orders
-  - image: dockeridohyeah/apps-tickets
-    docker:
-      dockerfile: Dockerfile.tickets
 deploy:
   kubectl:
     manifests:
-    - infra/k8s/auth-depl.yaml
-    - infra/k8s/charge-depl.yaml
-    - infra/k8s/orders-deply.yaml
-    - infra/k8s/tikcets-deply.yaml
+    - infra/k8s/*

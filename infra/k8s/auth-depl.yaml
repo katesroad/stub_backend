@@ -3,22 +3,24 @@ kind: Deployment
 metadata:
   name: auth-depl
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app: auth-depl
+      app: auth
   template:
     metadata:
       labels:
-        app: auth-depl
+        app: auth
     spec:
       containers:
         - name: auth
-          image: dockeridohyeah/apps-auth:latest
-          resources:
-            limits:
-              memory: '128Mi'
-              cpu: '500m'
-
+          image: dockeridohyeah/nest-auth:latest
+          env:
+            - name: access
+              valueFrom:
+                secretKeyRef:
+                  name: auth
+                  key: access
 ---
 apiVersion: v1
 kind: Service
