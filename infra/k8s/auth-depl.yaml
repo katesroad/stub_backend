@@ -16,6 +16,8 @@ spec:
         - name: auth
           image: dockeridohyeah/nest-auth:latest
           env:
+            - name: NODE_ENV
+              value: development
             - name: access
               valueFrom:
                 secretKeyRef:

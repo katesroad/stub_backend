@@ -2,11 +2,12 @@ import { CatchAllFilter } from '@app/common/filters';
 import { ResInterceptor } from '@app/common/interceptors';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import * as cookieParser from 'cookie-parser';
 import { UserModule } from './user.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(UserModule);
+  const app = await NestFactory.create<NestExpressApplication>(UserModule);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -18,6 +19,9 @@ async function bootstrap() {
   app.useGlobalFilters(new CatchAllFilter());
   app.useGlobalInterceptors(new ResInterceptor());
   app.use(cookieParser());
+
+  // trust ingress delegation
+  app.set('trust proxy', true);
   app.enableCors({ credentials: true, origin: true });
 
   await app.listen(3001, () => {
