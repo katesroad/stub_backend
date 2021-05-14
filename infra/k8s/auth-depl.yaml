@@ -21,6 +21,23 @@ spec:
                 secretKeyRef:
                   name: auth
                   key: access
+            - name: accessExpiresIn
+              valueFrom:
+                secretKeyRef:
+                  name: auth
+                  key: accessExpiresIn
+            - name: token
+              valueFrom:
+                secretKeyRef:
+                  name: auth
+                  key: token
+            - name: tokenExpiresIn
+              valueFrom:
+                secretKeyRef:
+                  name: auth
+                  key: tokenExpiresIn
+                
+                
 ---
 apiVersion: v1
 kind: Service

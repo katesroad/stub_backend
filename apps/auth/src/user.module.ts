@@ -14,10 +14,14 @@ import { MongoModule } from './mongo/mongo.module';
       isGlobal: true,
       load: [config],
       validationSchema: Joi.object({
-        token: {
+        access: Joi.object({
           secret: Joi.string(),
           expiresIn: Joi.string(),
-        },
+        }),
+        token: Joi.object({
+          secret: Joi.string(),
+          expiresIn: Joi.string(),
+        }),
       }),
     }),
     MongoModule,

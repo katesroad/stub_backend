@@ -9,6 +9,7 @@ import { CryptoService } from './crypto.service';
       inject: [ConfigService],
       useFactory: (conf: ConfigService) => {
         const { secret, expiresIn } = conf.get('token');
+        console.log(conf.get('token'), conf.get('auth'));
         return { secret, signOptions: { expiresIn: `${expiresIn}` } };
       },
     }),
