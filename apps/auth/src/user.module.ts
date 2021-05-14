@@ -4,9 +4,10 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { CryptoModule } from './crypto/crypto.module';
 import { MongoModule } from './mongo/mongo.module';
+import { AuthModule } from '@app/common/auth';
 
 @Module({
-  imports: [MongoModule, CryptoModule],
+  imports: [MongoModule, CryptoModule, AuthModule],
   controllers: [UserController],
   providers: [UserService],
 })
