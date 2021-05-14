@@ -58,13 +58,13 @@ export class UserService {
   }
 
   async logout(userId: string) {
-    return this.userModel.updateOne({ _id: userId, token: null });
+    return this.userModel.updateOne({ _id: userId }, { $set: { token: null } });
   }
 
   private async cleanUser({ _id, password, ...rest }: any): Promise<IUser> {
     const userData = { id: _id, ...rest };
     const token = this.cryptoService.getToken(userData);
-    await this.userModel.updateOne(_id, { token });
+    await this.userModel.updateOne({ _id }, { $set: { token } });
     return { ...userData, token };
   }
 }

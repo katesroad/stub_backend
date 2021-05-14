@@ -1,15 +1,13 @@
 import { Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { CryptoService } from './crypto.service';
 
 @Module({
   imports: [
     JwtModule.registerAsync({
-      inject: [ConfigService],
-      useFactory: (conf: ConfigService) => {
-        const { secret, expiresIn } = conf.get('token');
-        console.log(conf.get('token'), conf.get('auth'));
+      useFactory: () => {
+        const secret = process.env.token as string;
+        const expiresIn = process.env.tokenExpiresIn as string;
         return { secret, signOptions: { expiresIn: `${expiresIn}` } };
       },
     }),
