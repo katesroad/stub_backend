@@ -7,6 +7,9 @@ build:
   - image: dockeridohyeah/nest-auth
     docker:
       dockerfile: Dockerfile.auth
+  - image: dockeridohyeah/nest-charege
+    docker:
+      dockerfile: Dockerfile.charge
   - image: dockeridohyeah/nest-tickets
     docker:
       dockerfile: Dockerfile.tickets
@@ -16,6 +19,8 @@ deploy:
     - infra/k8s/auth-depl.yaml
     - infra/k8s/auth-mongo-depl.yaml
     - infra/k8s/auth-srv.yaml
+    - infra/k8s/charge-depl.yaml
+    - infra/k8s/charge-mongo-depl.yaml
     - infra/k8s/nats-depl.yaml
     - infra/k8s/tickets-depl.yaml
     - infra/k8s/tickets-mongo-depl.yaml

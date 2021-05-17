@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: charge-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: charge
+  template:
+    metadata:
+      labels:
+        app: charge
+    spec:
+      containers:
+        - name: charge
+          image: dockeridohyeah/nest-charege:latest
+          env:
+            - name: NODE_ENV
+              value: development
+            - name: access
+              valueFrom:
+                secretKeyRef:
+                  name: auth
+                  key: access
+            - name: accessExpiresIn
+              valueFrom:
+                secretKeyRef:
+                  name: auth
+                  key: accessExpiresIn
+                
+                
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: charge-srv
+spec:
+  selector:
+    app: charege 
+  ports:
+    - port: 3002
+      targetPort: 3002
