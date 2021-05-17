@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Request } from 'express';
 import * as mongoose from 'mongoose';
+import { AUTH_COOKIE_NAME } from '../constant';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -11,20 +12,21 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req: Request) => {
           try {
-            return req.cookies['access'];
+            return req.cookies[AUTH_COOKIE_NAME];
           } catch (e) {
             return '';
           }
         },
       ]),
+      ignoreExpiration: false,
       secretOrKey: process.env.access as string,
     });
   }
 
-  validate(payload: any) {
-    const isValid = mongoose.Types.ObjectId.isValid(payload.id);
+  validate({ sub, ...userData }: any) {
+    const isValid = mongoose.Types.ObjectId.isValid(sub);
     if (isValid) {
-      return payload;
+      return { id: sub, ...userData };
     }
     throw new ForbiddenException('Wrong credentials provided');
   }

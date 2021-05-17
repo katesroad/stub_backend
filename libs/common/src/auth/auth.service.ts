@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IUser } from '../interfaces';
+import { AUTH_COOKIE_NAME } from './constant';
 
 @Injectable()
 export class AuthService {
   constructor(private readonly jwtService: JwtService) {}
 
-  signUser(user: any): string {
-    return this.jwtService.sign(user);
+  signUser({ id, ...userData }: any): string {
+    return this.jwtService.sign({ sub: id, ...userData });
   }
 
   verifyToken(token: string): any {
@@ -20,9 +21,9 @@ export class AuthService {
     let cookie = 'Path=/';
     if (user) {
       const { access } = user;
-      cookie = `access=${access};Max-Age=${accessExpirationTime}`;
+      cookie = `${AUTH_COOKIE_NAME}=${access};Max-Age=${accessExpirationTime}`;
     } else {
-      cookie += `access=;Max-Age=0`;
+      cookie += `${AUTH_COOKIE_NAME}=;Max-Age=0`;
     }
     if (isProd) {
       cookie += 'Secure=true;SameSite=None;HttpOnly=true';
