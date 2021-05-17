@@ -16,7 +16,7 @@ export class AuthService {
 
   getAuthCookie(user?: IUser | null) {
     const accessExpirationTime = process.env.accessExpiresIn;
-    let isProd = process.env.NODE_ENV === 'production';
+    const isProd = process.env.NODE_ENV === 'production';
     let cookie = 'Path=/';
     if (user) {
       const { access } = user;
