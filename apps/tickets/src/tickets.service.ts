@@ -47,7 +47,7 @@ export class TicketsService {
 
     if (!record) {
       throw new BadRequestException(
-        `Either the ticket dosen't exist or current user is not ticket creator`,
+        `Either the ticket doesn't exist or current user is not ticket creator`,
       );
     }
     return this.ticketModel
