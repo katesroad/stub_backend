@@ -11,7 +11,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req: Request) => {
           try {
-            console.log(req.cookies['access'], '-----');
             return req.cookies['access'];
           } catch (e) {
             return '';
@@ -23,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   validate(payload: any) {
-    const isValid = mongoose.Types.ObjectId.isValid(payload.sub); //true
+    const isValid = mongoose.Types.ObjectId.isValid(payload.id);
     if (isValid) {
       return payload;
     }

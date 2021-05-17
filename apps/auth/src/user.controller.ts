@@ -6,12 +6,14 @@ import {
   HttpStatus,
   Post,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { LoginDto, RegisterDto } from './dto';
 import { Response } from 'express';
 import { IUser } from '@app/common/interfaces';
-import { AuthService } from '@app/common/auth';
+import { AuthService, JwtGuard } from '@app/common/auth';
+import { Token, User } from '@app/common';
 
 @Controller('/users')
 export class UserController {
@@ -21,8 +23,9 @@ export class UserController {
   ) {}
 
   @Get()
-  renewUser() {
-    return this.userService.renewUser('');
+  async renewUser(@Token() token:string @Res() res: Response) {
+    const user = await this.userService.renewUser(token)
+    return this.handleAuthedRequest(res, user);
   }
 
   @HttpCode(HttpStatus.CREATED)
@@ -39,10 +42,12 @@ export class UserController {
     return this.handleAuthedRequest(res, user);
   }
 
+  @UseGuards(JwtGuard)
   @Get('/logout')
-  async logout(@Res() res: Response) {
-    const user = null;
-    return this.handleAuthedRequest(res, user);
+  async logout(@User('id') userId: string, @Res() res: Response) {
+    return this.userService
+      .logout(userId)
+      .then(() => this.handleAuthedRequest(res, null));
   }
 
   private async handleAuthedRequest(
