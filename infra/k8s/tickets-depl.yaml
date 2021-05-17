@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tickets-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tickets
+  template:
+    metadata:
+      labels:
+        app: tickets
+    spec:
+      containers:
+        - name: tickets
+          image: dockeridohyeah/nest-tickets:latest
+          env:
+            - name: NODE_ENV
+              value: development
+            - name: access
+              valueFrom:
+                secretKeyRef:
+                  name: auth
+                  key: access
+            - name: accessExpiresIn
+              valueFrom:
+                secretKeyRef:
+                  name: auth
+                  key: accessExpiresIn
+                
+                
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tickets-srv
+spec:
+  selector:
+    app: tickets
+  ports:
+    - port: 3004
+      targetPort: 3004
